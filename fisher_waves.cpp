@@ -85,58 +85,61 @@ no_int=10;
 // our parameters:
 
 
-        x_t	= new double  [no_points];
-			for(i=0;i<no_points;i++)
-				x_t[i]		 = t/no_points*i*dt;
+    x_t	= new double  [no_points];
+        for(i=0;i<no_points;i++)
+            x_t[i] = t/no_points*i*dt;
     
     y_t	= new double *[no_points];
             for(i=0;i<no_points;i++)
-				y_t[i] 		 = new double [ly]; 
+				y_t[i] = new double [ly];
 
 	y_cut_t	= new double *[no_points];
 			for(i=0;i<no_points;i++)
-				y_cut_t[i]       = new double [ly]; 
+				y_cut_t[i] = new double [ly];
 
 	y_end_t	= new double *[no_points];
 			for(i=0;i<no_points;i++)
-				y_end_t[i]       = new double [ly]; 
+				y_end_t[i] = new double [ly];
 
 	Sq 	= new double *[ly/2];
 			for(i=0;i<ly/2;i++)
-				Sq[i] 	  = new double [no_points];
+				Sq[i] = new double [no_points];
 
-	Sq_edge 	= new double *[ly/2];
+	Sq_edge = new double *[ly/2];
 			for(i=0;i<ly/2;i++)
 				Sq_edge[i] = new double [no_points];
 
 
-	Sq_end 	= new double *[ly/2];
+	Sq_end = new double *[ly/2];
 			for(i=0;i<ly/2;i++)
 				Sq_end[i] = new double [no_points];
 
 	
-		for(i=0;i<no_points;i++)
-			{
-                w[i]=0;
-				for(iy=0;iy<ly;iy++)
-					{y_t[i][iy]=0; y_cut_t[i][iy]=0; y_end_t[i][iy]=0;}
-			}
-    
+    for(i=0;i<no_points;i++)
+    {
+        w[i]=0;
+        for(iy=0;iy<ly;iy++)
+        {
+            y_t[i][iy]=0;
+            y_cut_t[i][iy]=0;
+            y_end_t[i][iy]=0;
+        }
+    }
     
 	
-		for(i_br=0;i_br<no_int;i_br++)  //----simulations-------
-		{ 	
-            stochastic(s, lx, ly, t, no_points, dx, dt, D, sigma, x_t, y_t, y_cut_t, y_end_t, w, w_cut, w_end, Sq, Sq_edge, Sq_end, inic );
-			cout << "Calculation time: " << time(NULL)-calc_time << "     " << i_br << "\n" <<endl;
-			calc_time=time(NULL);
-		}
+    for(i_br=0;i_br<no_int;i_br++)  //----simulations-------
+    {
+        stochastic(s, lx, ly, t, no_points, dx, dt, D, sigma, x_t, y_t, y_cut_t, y_end_t, w, w_cut, w_end, Sq, Sq_edge, Sq_end, inic );
+        cout << "Calculation time: " << time(NULL)-calc_time << "     " << i_br << "\n" <<endl;
+        calc_time=time(NULL);
+    }
     
-		for(i=0;i<no_points;i++) 
-        {
-            w[i]     = sqrt(w[i]/no_int);
-            w_cut[i] = sqrt(w_cut[i]/no_int);
-            w_end[i] = sqrt(w_end[i]/no_int);
-        }
+    for(i=0;i<no_points;i++)
+    {
+        w[i]     = sqrt(w[i]/no_int);
+        w_cut[i] = sqrt(w_cut[i]/no_int);
+        w_end[i] = sqrt(w_end[i]/no_int);
+    }
 	
 	
     write1d_data(x_t, w    , no_points, "roughness_front.txt");

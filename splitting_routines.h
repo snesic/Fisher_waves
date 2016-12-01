@@ -1,28 +1,18 @@
 /*
- *  splitting.cpp
- *  
- 
- kompajlirati: g++ split_klasa.cpp -O4 -lfftw3 -lm -o proba
- 
- 
- FISHER WAVES  -   2D      ROUGHNESS FUNCTION, PSD AND KPZ BEHAVIOR, CORRELATION BETWEEN EDGE AND THE MIDDLE POINT OF THE FRONT, MAYBE, INSTABILITIES APPEAR
- 
- 
- Za pocetni uslov    step funkcija!!!        druga opcija:       f(x-ct + epsilon*sin(q*y)),  gde je q=2*PI*i/ly
- 
- Sve velicine su normirane!!!
- 
- racuna: 
- 
- 1. roughness function     ->	 roughness1.txt
- 2. Sq in time             ->    matsq.txt
- 3. rougness front mat     ->    mat_front.txt
- 4. rougness edge mat      ->    mat_edge.txt
- 
- 
- 5. roughness over max sq  ->    omega_in_sqmax.txt
- jos ne funkcionise 4. max sq over time       ->    sqmax_in_t.txt
- 
+ * Routines used by simulation
+ *
+ shift_arr_l shifts the waves back in order not to leave the box
+ *
+ fftw_line Fourier transforms the line
+ *
+ integrate_noise: Samples random numbers as a part of the predictor step
+ *
+ integrate_diffusion: Corrector step: solves the deterministic equation (diffusion term + reaction term)
+ *
+ check_wave_positions: for faster calculations (always keep track of rho=1/2) 
+ *
+ calculate_positions: Calculates the equipotential lines (rho= 1/2, 1/N, 0)
+ *
  *
  *  Created by Svetozar Nesic on 26.2.10..
  *  Copyright 2010 __MyCompanyName__. All rights reserved.

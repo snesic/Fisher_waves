@@ -2,19 +2,22 @@
  *  fisher_waves.cpp
  *
  Simulation of stochastic FISHER WAVES in 2D.  ROUGHNESS FUNCTION, PSD AND KPZ BEHAVIOR, CORRELATION BETWEEN the EDGE AND FRONT..
+ 
  The algorithm employs the splitting step scheme to solve the stochastic partial differential equation.
  *
  Initial condition:    Step function!!!        other options:       f(x-ct + epsilon*sin(q*y)),  where q=2*PI*i/ly...
+ *
+ Traveling direction: x
  *
  All variables are normalized!!!
  *
  Variables:
  *
- 1. roughness function  ->	 roughness.txt
- 2. Sq(t)               ->    matsq.txt
- 3. front(t)            ->    mat_front.txt
- 4. edge (t)            ->    mat_edge.txt
- 
+ 1. roughness function w(t)  ->    roughness.txt
+ 2. Sq(t)                    ->    matsq.txt
+ 3. front(t)                 ->    mat_front.txt -> equipotential line where rho(x,y) = 1/2
+ 4. edge (t)                 ->    mat_edge.txt  -> equipotential line where rho(x,y) = 1/N
+ 5. end (t)                 ->    mat_edge.txt   -> equipotential line where rho(x,y) = 0
  *
  *  Created by Svetozar Nesic on 26.2.10..
  *  Copyright 2010 __MyCompanyName__. All rights reserved.
@@ -36,7 +39,7 @@ using namespace std;
 
 int main(int argc, char * const argv[])
 {   double **s;
-    int lx, ly, i, iy, brojac,no_int,i_br;
+    int lx, ly, i, iy, brojac,no_int,i_no;
 	long int t;
 	double dx, dt, D, sigma;
     time_t calc_time;
@@ -44,13 +47,14 @@ int main(int argc, char * const argv[])
     
     double *x_t, **y_t, **y_cut_t, **y_end_t, *w, *w_cut, *w_end, **Sq, **Sq_edge, **Sq_end;
     int no_points;
+    
 
 					// D,sigma:  	 	     - system constants. calc_time: calculation time
 					// dx, dy=dx, dt 	     - discretization of space and time. t,lx, ly: system size. *s: system function.
 					// w, w_cut 	 - averaged rougness of the front and edge. 
 					// w_fourier, Sq 	     - a. roughness in fourier space,  structure factor averaged
 					// y_t, y_cut_t, x_t     - coordinates of the front line, edge line. 
-					// iy , i, i_br          - counters lateral size, usually time counter, realizations
+					// iy , i, i_no          - counters lateral size, usually time counter, realizations
 
 calc_time = time(NULL);
 
@@ -58,16 +62,25 @@ no_int=10;
 
 //system parameters:
 
+    
+    if (argc==2) // When the program runs in parallel (by script), only one realization is performed (no_int=1) 
+    {   ly =  atoi(argv[1]);
+        no_int = 1;
+    }
+    else ly = 256;
+    if (ly>2048) {ly=2048; cout << "ly too big, 2048 is used"<< endl;}
+
 	sigma = 1e-3;
-	
 	lx  = 900;
-	ly  = 264;
 	t   = 300;
 	dt  = 0.05;
 	dx  = 1;
 	D   = 1;
 	no_points=t/100;
-    *inic=45;
+   // *inic=45;
+    *inic=time(NULL)*500;
+
+    
 
 	w  		= new double [no_points];
 	w_cut  	= new double [no_points];
@@ -127,10 +140,10 @@ no_int=10;
     }
     
 	
-    for(i_br=0;i_br<no_int;i_br++)  //----simulations-------
+    for(i_no=0;i_no<no_int;i_no++)  //----no_int simulations-------
     {
         stochastic(s, lx, ly, t, no_points, dx, dt, D, sigma, x_t, y_t, y_cut_t, y_end_t, w, w_cut, w_end, Sq, Sq_edge, Sq_end, inic );
-        cout << "Calculation time: " << time(NULL)-calc_time << "     " << i_br << "\n" <<endl;
+        cout << "Calculation time: " << time(NULL)-calc_time << "     " << i_no << "\n" <<endl;
         calc_time=time(NULL);
     }
     
@@ -146,7 +159,6 @@ no_int=10;
     write1d_data(x_t, w_cut, no_points, "roughness_edge.txt" );
     write1d_data(x_t, w_end, no_points, "roughness_end.txt"  );
 
-
     write2d_data_sq(Sq, ly, no_points, no_int, "matsq.txt");
     write2d_data_sq(Sq_edge, ly, no_points, no_int, "matsq_edge.txt");
     write2d_data_sq(Sq_end, ly, no_points, no_int, "matsq_end.txt");
@@ -154,7 +166,6 @@ no_int=10;
     write2d_data(y_t, ly, no_points, no_int, "mat_front.txt");
     write2d_data(y_cut_t, ly, no_points, no_int, "mat_edge.txt");
 	
-
 return 0;
 
 }

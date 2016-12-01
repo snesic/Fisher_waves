@@ -1,5 +1,5 @@
 /*
-
+ Initial condition for the sFKPP equation.
  */
 
 #include <iostream>

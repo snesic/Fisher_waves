@@ -1,9 +1,6 @@
 /*
  *
- FISHER WAVES  -   2D      ROUGHNESS FUNCTION, PSD AND KPZ BEHAVIOR, CORRELATION BETWEEN EDGE AND THE MIDDLE POINT OF THE FRONT, MAYBE, INSTABILITIES APPEAR
-
- Za pocetni uslov    step funkcija!!!        druga opcija:       f(x-ct + epsilon*sin(q*y)),  gde je q=2*PI*i/ly
- 
+  Implementation of splitting step algorithm
  *
  *  Created by Svetozar Nesic on 26.2.10..
  *  Copyright 2010 __MyCompanyName__. All rights reserved.

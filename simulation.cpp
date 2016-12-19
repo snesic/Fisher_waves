@@ -55,15 +55,15 @@ void stochastic(double **s, int lx, int ly, long int t, int no_points, double dx
             check_wave_positions(s, position, position_cut, position_end, N);
 			
 			if(s[2*lx/3-1][0]>s[0][0]/2 && s[2*lx/3][0]<s[0][0]/2) // SHIFTING IF FRONT HAS REACHED l/3
-				shift_arr_l(s, lx, ly, dx, &position, &position_cut, &position_end, &brojac, &brojac_cut, &brojac_end, &path, &path_cut, &path_end);
+				shift_arr_l(s, lx, ly, dx, position, position_cut, position_end, brojac, brojac_cut, brojac_end, path, path_cut, path_end);
 		}
 		
 		
 		// Coordinate of the (FRONT, EDGE, END) in time: First calculates the position of the first wave(y=0) and then comapres it with the positions of the other waves.
 		
-        calculate_positions(s, lx, ly, j1, y_t    , pos_front, w    , &brojac    , &path    , dx);
-        calculate_positions(s, lx, ly, j1, y_cut_t, pos_edge , w_cut, &brojac_cut, &path_cut, dx);
-        calculate_positions(s, lx, ly, j1, y_end_t, pos_end  , w_end, &brojac_end, &path_end, dx);
+        calculate_positions(s, lx, ly, j1, y_t    , pos_front, w    , brojac    , path    , dx);
+        calculate_positions(s, lx, ly, j1, y_cut_t, pos_edge , w_cut, brojac_cut, path_cut, dx);
+        calculate_positions(s, lx, ly, j1, y_end_t, pos_end  , w_end, brojac_end, path_end, dx);
         
         fftw_line(Sq, pos_front, ly, j1);     // Fourier transform----FRONT------
         fftw_line(Sq_edge, pos_edge, ly, j1); // Edge

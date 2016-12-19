@@ -17,8 +17,10 @@ void initial_message(int lx, int ly, long int t, double dt, double dx, int br_in
 }
 
 void write1d_data(double *x, double *y, int size, string filename)
-{
-    ofstream dat;
+{   ofstream dat;
+    
+    filename = "./" + filename;
+    cout << filename << endl;
     dat.open(filename.c_str(), ios::out);
     for(int i=0;i<size;i++)
         dat<< x[i] << "   " << y[i] << endl;
@@ -29,6 +31,7 @@ void write1d_data(double *x, double *y, int size, string filename)
 void write2d_data_sq(double **mat, int ly, int no_points, int br_int, string filename)
 {   ofstream dat;
 
+    filename = "./" + filename;
     dat.open(filename.c_str(), ios::out);
 
     for(int iy=0;iy<ly/2;iy++)

@@ -4,7 +4,7 @@
 
 //--------SHIFTS SEQUENCE TO LEFT FOR 2l/3-------------//
 
-void shift_arr_l(double **s, int lx, int ly, double dx, int *position, int *position_cut, int *position_end, int *brojac, int *brojac_cut, int *brojac_end, double *path, double *path_cut, double *path_end)
+void shift_arr_l(double **s, int lx, int ly, double dx, int& position, int& position_cut, int& position_end, int& brojac, int& brojac_cut, int& brojac_end, double& path, double& path_cut, double& path_end)
 {  int i,j; 
 
 	for(j=0;j<ly;j++)
@@ -17,17 +17,17 @@ void shift_arr_l(double **s, int lx, int ly, double dx, int *position, int *posi
 	}
     
     
-    *path = *path + (lx/3-(*brojac))*dx;
-    *brojac = 0;
-    *position = lx/3;
+    path = path + (lx/3-brojac)*dx;
+    brojac = 0;
+    position = lx/3;
 				
-    *path_cut = *path_cut + (lx/3-(*brojac_cut))*dx;
-    *brojac_cut = 0;
-    *position_cut = lx/3;
+    path_cut = path_cut + (lx/3-brojac_cut)*dx;
+    brojac_cut = 0;
+    position_cut = lx/3;
     
-    *path_end = *path_end + (lx/3-(*brojac_end))*dx;
-    *brojac_end = 0;
-    *position_end = lx/3;
+    path_end = path_end + (lx/3-brojac_end)*dx;
+    brojac_end = 0;
+    position_end = lx/3;
 
     
 }
@@ -140,23 +140,23 @@ void check_wave_positions(double **s, int position, int position_cut, int positi
 }
 
 
-void calculate_positions(double **s, int lx, int ly, int j1, double **y_fce_t, double *pos, double *omega, int *brojac, double *path_fce, double dx)
-{   int iy, ix = *brojac-1;
+void calculate_positions(double **s, int lx, int ly, int j1, double **y_fce_t, double *pos, double *omega, int& brojac, double& path_fce, double dx)
+{   int iy, ix = brojac-1;
     double path,h=0;
     do  ix++;
     while(s[ix+lx/3][0]>0.5);
     
-    path = path + (ix-(*brojac))*dx;
+    path = path + (ix-brojac)*dx;
     pos[0] = (path*(s[ix+lx/3-1][0]-s[ix+lx/3][0])+s[ix+lx/3][0]-0.5)/(s[ix+lx/3-1][0]-s[ix+lx/3][0]);
     y_fce_t[j1][0] = y_fce_t[j1][0] + pos[0];
     
-    *brojac=ix;
+    brojac=ix;
     
     // Positions of other waves:
     
     for(iy=1;iy<ly;iy++)
     {
-        ix = *brojac;
+        ix = brojac;
         if(s[ix+lx/3][iy]>0.5)
         	do  ix++;
             while(s[ix+lx/3][iy]>0.5);
@@ -166,7 +166,7 @@ void calculate_positions(double **s, int lx, int ly, int j1, double **y_fce_t, d
             while(s[ix+lx/3][iy]<0.5); ix++;
         
         
-        pos[iy] = ((path+(ix-(*brojac))*dx)*(s[ix+lx/3-1][iy]-s[ix+lx/3][iy])+s[ix+lx/3][iy]-0.5)/(s[ix+lx/3-1][iy]-s[ix+lx/3][iy]);
+        pos[iy] = ((path+(ix-brojac)*dx)*(s[ix+lx/3-1][iy]-s[ix+lx/3][iy])+s[ix+lx/3][iy]-0.5)/(s[ix+lx/3-1][iy]-s[ix+lx/3][iy]);
         y_fce_t[j1][iy] = y_fce_t[j1][iy] + pos[iy];
     }
     
@@ -178,7 +178,7 @@ void calculate_positions(double **s, int lx, int ly, int j1, double **y_fce_t, d
     for(iy=0;iy<ly;iy++)
         omega[j1]=omega[j1]+(pos[iy]-h)*(pos[iy]-h)/ly;
     
-    *path_fce=path;
+    path_fce=path;
 }
 
 

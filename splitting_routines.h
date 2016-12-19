@@ -25,7 +25,6 @@
 #include <fstream>
 #include <math.h>
 #include <time.h>
-//#include <complex.h>
 //#include "/opt/local/include/fftw3.h"
 #include <fftw3.h>
 #include "random_no_generators.h"
@@ -34,7 +33,7 @@
 
 using namespace std;
 
-void shift_arr_l(double **, int, int, double, int *, int *, int *, int *, int *, int *, double *, double *, double *); //SHIFTS SEQUENCE TO LEFT FOR 2l/3//
+void shift_arr_l(double **, int, int, double, int&, int&, int&, int&, int&, int&, double&, double&, double&); //SHIFTS SEQUENCE TO LEFT FOR 2l/3//
 
 
 void fftw_line(double **, double *, int, int); //---------Fourier transform----FRONT------------------//
@@ -45,6 +44,6 @@ void integrate_diffusion(double **, double *, double *, double *,  int, int, int
 
 void check_wave_positions(double **, int, int, int, double);
 
-void calculate_positions(double **, int, int, int, double **, double *, double *, int *, double *, double);
+void calculate_positions(double **, int, int, int, double **, double *, double *, int&, double&, double);
 
 

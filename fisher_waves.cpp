@@ -29,7 +29,6 @@
 #include <string>
 #include <math.h>
 #include <time.h>
-#include <fftw3.h>
 #include "read_write_msg.h"
 #include "initial_conditions.h"
 #include "simulation.h"
@@ -58,7 +57,7 @@ int main(int argc, char * const argv[])
 
 calc_time = time(NULL);
 
-no_int=10;
+no_int=1;
 
 //system parameters:
 
@@ -67,16 +66,16 @@ no_int=10;
     {   ly =  atoi(argv[1]);
         no_int = 1;
     }
-    else ly = 256;
+    else ly = 2048;
     if (ly>2048) {ly=2048; cout << "ly too big, 2048 is used"<< endl;}
 
 	sigma = 1e-3;
 	lx  = 900;
-	t   = 300;
+	t   = 400000;
 	dt  = 0.05;
 	dx  = 1;
 	D   = 1;
-	no_points=t/100;
+    no_points=t/2000;
    // *inic=45;
     *inic=time(NULL)*500;
 
@@ -157,14 +156,14 @@ no_int=10;
 	
     write1d_data(x_t, w    , no_points, "roughness_front.txt");
     write1d_data(x_t, w_cut, no_points, "roughness_edge.txt" );
-    write1d_data(x_t, w_end, no_points, "roughness_end.txt"  );
+//    write1d_data(x_t, w_end, no_points, "roughness_end.txt"  );
 
     write2d_data_sq(Sq, ly, no_points, no_int, "matsq.txt");
     write2d_data_sq(Sq_edge, ly, no_points, no_int, "matsq_edge.txt");
-    write2d_data_sq(Sq_end, ly, no_points, no_int, "matsq_end.txt");
+//    write2d_data_sq(Sq_end, ly, no_points, no_int, "matsq_end.txt");
 
     write2d_data(y_t, ly, no_points, no_int, "mat_front.txt");
-    write2d_data(y_cut_t, ly, no_points, no_int, "mat_edge.txt");
+//    write2d_data(y_cut_t, ly, no_points, no_int, "mat_edge.txt");
 	
 return 0;
 

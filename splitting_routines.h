@@ -25,7 +25,6 @@
 #include <fstream>
 #include <math.h>
 #include <time.h>
-//#include "/opt/local/include/fftw3.h"
 #include <fftw3.h>
 #include "random_no_generators.h"
 
@@ -36,14 +35,14 @@ using namespace std;
 void shift_arr_l(double **, int, int, double, int&, int&, int&, int&, int&, int&, double&, double&, double&); //SHIFTS SEQUENCE TO LEFT FOR 2l/3//
 
 
-void fftw_line(double **, double *, int, int); //---------Fourier transform----FRONT------------------//
+void fftw_line(double **, double *, const int&, const int&); //---------Fourier transform----FRONT------------------//
 
-void integrate_noise(double **, int, int, double, double, double, long int *);
+void integrate_noise(double **, const int&, const int&, const double&, const double&, const double&, long int *);
 
-void integrate_diffusion(double **, double *, double *, double *,  int, int, int, double, double, double);
+void integrate_diffusion(double **, double *, double *, double *,  const int&, const int&, const int&, const double&, const double&, const double&);
 
-void check_wave_positions(double **, int, int, int, double);
+void check_wave_positions(double **, int&, int&, int&, const double&);
 
-void calculate_positions(double **, int, int, int, double **, double *, double *, int&, double&, double);
+void calculate_positions(double **, const int&, const int&, const int&, double, double **, double *, double *, int&, double&, const double&);
 
 

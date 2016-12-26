@@ -30,7 +30,7 @@
 #include <math.h>
 #include <time.h>
 #include "read_write_msg.h"
-#include "initial_conditions.h"
+// #include "initial_conditions.h"
 #include "simulation.h"
 
 using namespace std;
@@ -44,7 +44,9 @@ int main(int argc, char * const argv[])
     time_t calc_time;
     long int *inic = new long int;
     
-    double *x_t, **y_t, **y_cut_t, **y_end_t, *w, *w_cut, *w_end, **Sq, **Sq_edge, **Sq_end;
+    double *x_t, **y_t, **y_cut_t, **y_end_t;
+    double *w, *w_cut, *w_end;
+    double **Sq, **Sq_edge, **Sq_end;
     int no_points;
     
 
@@ -71,13 +73,13 @@ no_int=1;
 
 	sigma = 1e-3;
 	lx  = 900;
-	t   = 400000;
+	t   = 40;
 	dt  = 0.05;
 	dx  = 1;
 	D   = 1;
-    no_points=t/2000;
-   // *inic=45;
-    *inic=time(NULL)*500;
+    no_points=2; //t/2000;
+    *inic=45;
+    //*inic=time(NULL)*500;
 
     
 
@@ -130,6 +132,8 @@ no_int=1;
     for(i=0;i<no_points;i++)
     {
         w[i]=0;
+        w_cut[i]=0;
+        w_end[i]=0;
         for(iy=0;iy<ly;iy++)
         {
             y_t[i][iy]=0;
@@ -146,6 +150,7 @@ no_int=1;
         calc_time=time(NULL);
     }
     
+    
     for(i=0;i<no_points;i++)
     {
         w[i]     = sqrt(w[i]/no_int);
@@ -153,7 +158,8 @@ no_int=1;
         w_end[i] = sqrt(w_end[i]/no_int);
     }
 	
-	
+    cout<< y_t[1][120] << " " << y_cut_t[1][120] << endl;
+    
     write1d_data(x_t, w    , no_points, "roughness_front.txt");
     write1d_data(x_t, w_cut, no_points, "roughness_edge.txt" );
 //    write1d_data(x_t, w_end, no_points, "roughness_end.txt"  );

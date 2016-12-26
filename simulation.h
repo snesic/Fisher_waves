@@ -20,4 +20,4 @@ using namespace std;
 
 
 
-void stochastic(double **, int, int, long int, int, double, double, double, double, double *, double **, double **, double **, double *, double *, double *, double **, double **, double **, long int * );
+void stochastic(double **, int, int, const long int&, int, double, double, double, double, double *, double **, double **, double **, double *, double *, double *, double **, double **, double **, long int * );

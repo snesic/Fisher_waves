@@ -19,7 +19,7 @@ fisher_waves:    $(fisher_waves_obj)
 
 fisher_waves.o: fisher_waves.cpp simulation.h read_write_msg.h initial_conditions.h
 
-simulation.o: simulation.cpp splitting_routines.h
+simulation.o: simulation.cpp splitting_routines.h initial_conditions.h
 
 splitting_routines.o: splitting_routines.cpp random_no_generators.h
 

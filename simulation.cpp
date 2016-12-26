@@ -1,7 +1,7 @@
 #include "simulation.h"
 
 
-void stochastic(double **s, int lx, int ly, long int t, int no_points, double dx, double dt, double D, double sigma, double *x_t, double **y_t, double **y_cut_t, double **y_end_t, double *w, double *w_cut, double *w_end, double **Sq, double **Sq_edge, double **Sq_end, long int *inic )
+void stochastic(double **s, int lx, int ly, const long int& t, int no_points, double dx, double dt, double D, double sigma, double *x_t, double **y_t, double **y_cut_t, double **y_end_t, double *w, double *w_cut, double *w_end, double **Sq, double **Sq_edge, double **Sq_end, long int *inic )
 {
 	int ix, iy, brojac, brojac_cut, brojac_end, position, position_cut,position_end;
 	long int j , j1 , vcounter; 
@@ -61,9 +61,9 @@ void stochastic(double **s, int lx, int ly, long int t, int no_points, double dx
 		
 		// Coordinate of the (FRONT, EDGE, END) in time: First calculates the position of the first wave(y=0) and then comapres it with the positions of the other waves.
 		
-        calculate_positions(s, lx, ly, j1, y_t    , pos_front, w    , brojac    , path    , dx);
-        calculate_positions(s, lx, ly, j1, y_cut_t, pos_edge , w_cut, brojac_cut, path_cut, dx);
-        calculate_positions(s, lx, ly, j1, y_end_t, pos_end  , w_end, brojac_end, path_end, dx);
+        calculate_positions(s, lx, ly, j1, 0.5, y_t    , pos_front, w    , brojac    , path    , dx);
+        calculate_positions(s, lx, ly, j1, 1/N, y_cut_t, pos_edge , w_cut, brojac_cut, path_cut, dx);
+        calculate_positions(s, lx, ly, j1,   0, y_end_t, pos_end  , w_end, brojac_end, path_end, dx);
         
         fftw_line(Sq, pos_front, ly, j1);     // Fourier transform----FRONT------
         fftw_line(Sq_edge, pos_edge, ly, j1); // Edge

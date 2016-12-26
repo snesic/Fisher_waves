@@ -35,7 +35,7 @@ void shift_arr_l(double **s, int lx, int ly, double dx, int& position, int& posi
 
 //---------Fourier transform-----------//
 
-void fftw_line(double ** sq, double *pos_line, int ly, int j1)
+void fftw_line(double ** sq, double *pos_line, const int& ly, const int& j1)
 { 	fftw_plan p;
     fftw_complex *izlaz;
 
@@ -53,7 +53,7 @@ fftw_destroy_plan(p);
 free(izlaz);
 }
 
-void integrate_noise(double **s, int position, int ly, double dt, double sigma, double lambda, long int *inic)
+void integrate_noise(double **s, const int& position, const int& ly, const double& dt, const double& sigma, const double& lambda, long int *inic)
 {   double prev_value, new_value;
     int inic_noise;
 
@@ -87,7 +87,7 @@ void integrate_noise(double **s, int position, int ly, double dt, double sigma, 
     }
 }
 
-void integrate_diffusion(double **s, double *firstx, double *lastx1, double *lastx2,  int position, int lx, int ly, double dx, double dt, double D)
+void integrate_diffusion(double **s, double *firstx, double *lastx1, double *lastx2,  const int& position, const int& lx, const int& ly, const double& dx, const double& dt, const double& D)
 {   double last1, last2;
     int ix,iy;
 
@@ -127,7 +127,7 @@ void integrate_diffusion(double **s, double *firstx, double *lastx1, double *las
 }
 
 
-void check_wave_positions(double **s, int position, int position_cut, int position_end, double N)
+void check_wave_positions(double **s, int& position, int& position_cut, int& position_end, const double& N)
 {
     if(s[position][0]>0.5)
         {do position=position+1; while (s[position][0]>0.5);}               //locating the front
@@ -140,14 +140,14 @@ void check_wave_positions(double **s, int position, int position_cut, int positi
 }
 
 
-void calculate_positions(double **s, int lx, int ly, int j1, double **y_fce_t, double *pos, double *omega, int& brojac, double& path_fce, double dx)
+void calculate_positions(double **s, const int& lx, const int& ly, const int& j1, double point, double **y_fce_t, double *pos, double *omega, int& brojac, double& path_fce, const double& dx)
 {   int iy, ix = brojac-1;
     double path,h=0;
     do  ix++;
-    while(s[ix+lx/3][0]>0.5);
+    while(s[ix+lx/3][0]>point);
     
     path = path + (ix-brojac)*dx;
-    pos[0] = (path*(s[ix+lx/3-1][0]-s[ix+lx/3][0])+s[ix+lx/3][0]-0.5)/(s[ix+lx/3-1][0]-s[ix+lx/3][0]);
+    pos[0] = (path*(s[ix+lx/3-1][0]-s[ix+lx/3][0])+s[ix+lx/3][0]-point)/(s[ix+lx/3-1][0]-s[ix+lx/3][0]);
     y_fce_t[j1][0] = y_fce_t[j1][0] + pos[0];
     
     brojac=ix;
@@ -157,16 +157,16 @@ void calculate_positions(double **s, int lx, int ly, int j1, double **y_fce_t, d
     for(iy=1;iy<ly;iy++)
     {
         ix = brojac;
-        if(s[ix+lx/3][iy]>0.5)
+        if(s[ix+lx/3][iy]>point)
         	do  ix++;
-            while(s[ix+lx/3][iy]>0.5);
+            while(s[ix+lx/3][iy]>point);
         
         else
             do  ix--;
-            while(s[ix+lx/3][iy]<0.5); ix++;
+            while(s[ix+lx/3][iy]<point); ix++;
         
         
-        pos[iy] = ((path+(ix-brojac)*dx)*(s[ix+lx/3-1][iy]-s[ix+lx/3][iy])+s[ix+lx/3][iy]-0.5)/(s[ix+lx/3-1][iy]-s[ix+lx/3][iy]);
+        pos[iy] = ((path+(ix-brojac)*dx)*(s[ix+lx/3-1][iy]-s[ix+lx/3][iy])+s[ix+lx/3][iy]-point)/(s[ix+lx/3-1][iy]-s[ix+lx/3][iy]);
         y_fce_t[j1][iy] = y_fce_t[j1][iy] + pos[iy];
     }
     

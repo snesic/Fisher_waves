@@ -5,32 +5,34 @@ void stochastic(double **s, int lx, int ly, const long int& t, int no_points, do
 {
 	int ix, iy, brojac, brojac_cut, brojac_end, position, position_cut,position_end;
 	long int j , j1 , vcounter; 
-	double path, path_cut, path_end, *pos_front, *pos_edge,*pos_end, *lastx1, *lastx2, *firstx,h,N;
-
+	double path, path_cut, path_end, *pos_front, *pos_edge,*pos_end, *lastx1, *lastx2, *firstx,N;
 	double lambda;
 	lambda=2/(sigma*sigma*dt);
 	N=pow(1/sigma,2);	
-	
+
 	
 	//---------INITIAL CONDITIONS-------------//
 	
 	inicon(s,lx,ly);
-	position=lx/3;
-	position_cut=lx/3;
-	position_end=lx/3;
+	position = position_cut = position_end = lx/3;
 	
 	// speed parameters:	
 
-	path=0;
-	brojac=0;
-	path_cut=0;
-	brojac_cut=0;
-	path_end=0;
-	brojac_end=0;
+	path = path_cut = path_end = 0;
+	brojac = brojac_cut = brojac_end = 1;
+    
 
 	pos_front 	= new double [ly];       // positions of the front (rho=1/2)
 	pos_edge 	= new double [ly];
 	pos_end 	= new double [ly];
+
+    for(iy=0;iy<ly;iy++)
+    {
+        pos_front[iy]=0;
+        pos_edge[iy]=0;
+        pos_end[iy]=0;
+    }
+
 
 	lastx1 = new double[lx];
 	lastx2 = new double[lx];
@@ -47,8 +49,7 @@ void stochastic(double **s, int lx, int ly, const long int& t, int no_points, do
 	for(j1=0;j1<no_points;j1++)
 	{
 		for(j=j1*t/no_points;j<(j1+1)*t/no_points;j++)
-		{  
-			
+		{
             integrate_noise(s, position, ly, dt, sigma, lambda, inic);  // Splitting step method: integrating stochastic part first:
             integrate_diffusion(s, firstx, lastx1, lastx2, position, lx, ly, dx, dt, D); // Integrating deterministic part:
 
@@ -60,17 +61,19 @@ void stochastic(double **s, int lx, int ly, const long int& t, int no_points, do
 		
 		
 		// Coordinate of the (FRONT, EDGE, END) in time: First calculates the position of the first wave(y=0) and then comapres it with the positions of the other waves.
-		
+
         calculate_positions(s, lx, ly, j1, 0.5, y_t    , pos_front, w    , brojac    , path    , dx);
         calculate_positions(s, lx, ly, j1, 1/N, y_cut_t, pos_edge , w_cut, brojac_cut, path_cut, dx);
-        calculate_positions(s, lx, ly, j1,   0, y_end_t, pos_end  , w_end, brojac_end, path_end, dx);
+//      calculate_positions(s, lx, ly, j1,   0, y_end_t, pos_end  , w_end, brojac_end, path_end, dx);
+
         
-        fftw_line(Sq, pos_front, ly, j1);     // Fourier transform----FRONT------
-        fftw_line(Sq_edge, pos_edge, ly, j1); // Edge
-        fftw_line(Sq_end, pos_end, ly, j1);   // End
-				
-		
+        fftw_line(Sq,      pos_front, ly, j1);     // Fourier transform----FRONT------
+        fftw_line(Sq_edge, pos_edge , ly, j1);     // Edge
+//      fftw_line(Sq_end,  pos_end  , ly, j1);     // End
+
+
 	}	// end of the j1 counter, time counter
+    
     
 }
 

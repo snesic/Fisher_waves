@@ -35,7 +35,7 @@ using namespace std;
 void shift_arr_l(double **, int, int, double, int&, int&, int&, int&, int&, int&, double&, double&, double&); //SHIFTS SEQUENCE TO LEFT FOR 2l/3//
 
 
-void fftw_line(double **, double *, const int&, const int&); //---------Fourier transform----FRONT------------------//
+void fftw_line(double **, double *, const int&, const long int&); //---------Fourier transform----FRONT------------------//
 
 void integrate_noise(double **, const int&, const int&, const double&, const double&, const double&, long int *);
 
@@ -43,6 +43,6 @@ void integrate_diffusion(double **, double *, double *, double *,  const int&, c
 
 void check_wave_positions(double **, int&, int&, int&, const double&);
 
-void calculate_positions(double **, const int&, const int&, const int&, double, double **, double *, double *, int&, double&, const double&);
+void calculate_positions(double **, const int&, const int&, const long int&, double, double **, double *, double *, int&, double&, const double&);
 
 

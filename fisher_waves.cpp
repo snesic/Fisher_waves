@@ -49,7 +49,6 @@ int main(int argc, char * const argv[])
     double **Sq, **Sq_edge, **Sq_end;
     int no_points;
     
-
 					// D,sigma:  	 	     - system constants. calc_time: calculation time
 					// dx, dy=dx, dt 	     - discretization of space and time. t,lx, ly: system size. *s: system function.
 					// w, w_cut 	 - averaged rougness of the front and edge. 
@@ -68,17 +67,17 @@ no_int=1;
     {   ly =  atoi(argv[1]);
         no_int = 1;
     }
-    else ly = 2048;
+    else ly = 16;
     if (ly>2048) {ly=2048; cout << "ly too big, 2048 is used"<< endl;}
 
-	sigma = 1e-3;
+    sigma = 1e-3;
 	lx  = 900;
-	t   = 40;
+	t   = 5000;
 	dt  = 0.05;
 	dx  = 1;
 	D   = 1;
-    no_points=2; //t/2000;
-    *inic=45;
+    no_points=10; //t/2000;
+    *inic=35;
     //*inic=time(NULL)*500;
 
     
@@ -90,13 +89,10 @@ no_int=1;
 
 	s  = new double *[lx];
 	for(i=0;i<lx;i++)
-		s[i] = new double [ly]; 
+		s[i] = new double [ly];
 
 
     initial_message(lx, ly, t, dt, dx, no_int, sigma);
-
-    
-// our parameters:
 
 
     x_t	= new double  [no_points];
@@ -134,6 +130,7 @@ no_int=1;
         w[i]=0;
         w_cut[i]=0;
         w_end[i]=0;
+        
         for(iy=0;iy<ly;iy++)
         {
             y_t[i][iy]=0;
@@ -141,6 +138,17 @@ no_int=1;
             y_end_t[i][iy]=0;
         }
     }
+    
+    
+    for(i=0;i<no_points;i++)
+        for(iy=0;iy<ly/2;iy++)
+        {
+            Sq     [iy][i] = 0;
+            Sq_edge[iy][i] = 0;
+        }
+
+    
+
     
 	
     for(i_no=0;i_no<no_int;i_no++)  //----no_int simulations-------
@@ -157,19 +165,17 @@ no_int=1;
         w_cut[i] = sqrt(w_cut[i]/no_int);
         w_end[i] = sqrt(w_end[i]/no_int);
     }
-	
-    cout<< y_t[1][120] << " " << y_cut_t[1][120] << endl;
     
     write1d_data(x_t, w    , no_points, "roughness_front.txt");
     write1d_data(x_t, w_cut, no_points, "roughness_edge.txt" );
-//    write1d_data(x_t, w_end, no_points, "roughness_end.txt"  );
+//  write1d_data(x_t, w_end, no_points, "roughness_end.txt"  );
 
-    write2d_data_sq(Sq, ly, no_points, no_int, "matsq.txt");
+    write2d_data_sq(Sq,      ly, no_points, no_int, "matsq.txt");
     write2d_data_sq(Sq_edge, ly, no_points, no_int, "matsq_edge.txt");
-//    write2d_data_sq(Sq_end, ly, no_points, no_int, "matsq_end.txt");
+//  write2d_data_sq(Sq_end,  ly, no_points, no_int, "matsq_end.txt");
 
-    write2d_data(y_t, ly, no_points, no_int, "mat_front.txt");
-//    write2d_data(y_cut_t, ly, no_points, no_int, "mat_edge.txt");
+    write2d_data(y_t,     ly, no_points, no_int, "mat_front.txt");
+    write2d_data(y_cut_t, ly, no_points, no_int, "mat_edge.txt");
 	
 return 0;
 
